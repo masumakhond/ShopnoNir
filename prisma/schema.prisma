@@ -1,0 +1,100 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  ADMIN
+  MEMBER
+}
+
+enum BatchStatus {
+  UPCOMING
+  ACTIVE
+  COMPLETED
+}
+
+enum CapitalPool {
+  MAIN
+  ADDITIONAL
+}
+
+model User {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  role         Role
+  name         String
+  phone        String?
+  nominee      String?
+  nomineePhone String?
+  nidNumber    String?
+  address      String?
+  memberId     String?  @unique
+  member       Member?  @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+}
+
+model Member {
+  id             String                @id @default(cuid())
+  memberNumber   Int                   @unique
+  name           String
+  phone          String?
+  nominee        String?
+  nomineePhone   String?
+  nidNumber      String?
+  address        String?
+  active         Boolean               @default(true)
+  monthlyAmount  Decimal               @default(5000)
+  createdAt      DateTime              @default(now())
+  updatedAt      DateTime              @updatedAt
+  user           User?
+  contributions  MonthlyContribution[]
+  batchMembers   BatchMember[]
+}
+
+model MonthlyContribution {
+  id        String   @id @default(cuid())
+  memberId  String
+  member    Member   @relation(fields: [memberId], references: [id], onDelete: Cascade)
+  year      Int
+  month     Int
+  amount    Decimal
+  note      String?
+  createdAt DateTime @default(now())
+
+  @@unique([memberId, year, month])
+  @@index([memberId])
+}
+
+model InvestmentBatch {
+  id          String        @id @default(cuid())
+  trackingId  String        @unique
+  name        String?
+  startDate   DateTime
+  endDate     DateTime
+  totalAmount       Decimal  // main capital (e.g. regular December pool)
+  additionalAmount  Decimal  @default(0) // extra capital (e.g. carried from previous year)
+  totalProfit       Decimal
+  status      BatchStatus   @default(ACTIVE)
+  closedAt    DateTime?
+  notes       String?
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+  members     BatchMember[]
+}
+
+model BatchMember {
+  batchId     String
+  memberId    String
+  capitalPool CapitalPool     @default(MAIN)
+  batch       InvestmentBatch @relation(fields: [batchId], references: [id], onDelete: Cascade)
+  member      Member          @relation(fields: [memberId], references: [id], onDelete: Cascade)
+
+  @@id([batchId, memberId, capitalPool])
+}

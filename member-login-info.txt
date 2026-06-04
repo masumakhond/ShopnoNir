@@ -1,0 +1,48 @@
+ShopnoNir login information
+Generated: 2026-05-20
+
+Admin login
+- Username: masumbillahakhond
+- Email: masumbillahakhond@samiti.local
+- Password: (set in .env or changed from account page)
+
+Member login (all members)
+- Username pattern: member<4-digit-id>
+- Password pattern: Member@<4-digit-id>
+
+Full member list
+1. MD. Masum Billah Akhond - member1001 - member1001@samiti.local - Member@1001
+2. Toyeeba Akhond - member1002 - member1002@samiti.local - Member@1002
+3. Mahfuja - member1003 - member1003@samiti.local - Member@1003
+4. Shaifuddin Ahammed Rokib - member1004 - member1004@samiti.local - Member@1004
+5. Esmat Jahan Lima - member1005 - member1005@samiti.local - Member@1005
+6. Atef Arman Shishir - member1006 - member1006@samiti.local - Member@1006
+7. Marof Billah - member1007 - member1007@samiti.local - Member@1007
+8. Iftekhar Shakkhor - member1008 - member1008@samiti.local - Member@1008
+9. Syeda Nusrat Parvin Kona - member1009 - member1009@samiti.local - Member@1009
+10. Sheikh Abbas Ali - member1010 - member1010@samiti.local - Member@1010
+11. Nazmul Ahmed Alok - member1011 - member1011@samiti.local - Member@1011
+12. MD Solaiman Sheikh - member1012 - member1012@samiti.local - Member@1012
+13. Mohammad Jannatun Nayem - member1013 - member1013@samiti.local - Member@1013
+14. Saba Kabir - member1014 - member1014@samiti.local - Member@1014
+15. Sheikh Ayub - member1015 - member1015@samiti.local - Member@1015
+16. Israt Jahan Rito - member1016 - member1016@samiti.local - Member@1016
+17. Khalid Kaiser Romman - member1017 - member1017@samiti.local - Member@1017
+18. Aminur Rahman - member1018 - member1018@samiti.local - Member@1018
+19. Tanvir Yeasin Opy - member1019 - member1019@samiti.local - Member@1019
+20. Monirul Abdin Seum - member1020 - member1020@samiti.local - Member@1020
+21. Mahfujur Rahman Akhond - member1021 - member1021@samiti.local - Member@1021
+22. Jeaul Haque Bayzed - member1022 - member1022@samiti.local - Member@1022
+23. Sakibur Rahman - member1023 - member1023@samiti.local - Member@1023
+24. Sayem - member1024 - member1024@samiti.local - Member@1024
+25. Mahmudul Hasan Sifat - member1025 - member1025@samiti.local - Member@1025
+26. Fatematuzzohora - member1026 - member1026@samiti.local - Member@1026
+27. Sheikh Ahmad Ali - member1027 - member1027@samiti.local - Member@1027
+28. Tuba - member1028 - member1028@samiti.local - Member@1028
+29. Harunur Rashid - member1029 - member1029@samiti.local - Member@1029
+30. Sanjida Moni - member1030 - member1030@samiti.local - Member@1030
+31. Maida - member1031 - member1031@samiti.local - Member@1031
+32. Tofazzal Al Hoque - member1032 - member1032@samiti.local - Member@1032
+
+Note:
+- If a member changes password in account page, that password may differ.

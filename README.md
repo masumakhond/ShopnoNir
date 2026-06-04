@@ -1,36 +1,93 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# সমিতি Investment Cooperative
 
-## Getting Started
+Full-stack web app for a 32-member savings and investment cooperative (BDT 5,000/month per member).
 
-First, run the development server:
+## Features
+
+- **Admin**: manage members, record monthly contributions (single or **bulk all 32**), create/edit/delete investment batches (flexible dates, profit %, member tags), fund dashboard
+- **Members**: view own principal, daily profit accrual, batch breakdown, contribution history
+- **Bengali UI** labels across navigation, forms, and dashboards (`src/lib/i18n.ts`)
+- **Profit logic**: enter **main amount** + **profit amount** + **duration** (start/end dates); `daily_profit = total_profit ÷ days`, split equally among tagged members per calendar day
+- **JWT auth** (httpOnly cookie), deployable on **Vercel** + **Supabase PostgreSQL**
+
+## Tech stack
+
+- Next.js 16 (App Router) + TypeScript + Tailwind CSS
+- Prisma + PostgreSQL
+- bcrypt + jose (JWT)
+
+## Setup (local)
+
+1. Copy environment file:
+
+```bash
+cp .env.example .env
+```
+
+2. Set `DATABASE_URL` (Supabase → Project Settings → Database → connection string) and `JWT_SECRET`.
+
+3. Install and migrate:
+
+```bash
+npm install
+npx prisma db push
+npm run db:seed
+```
+
+4. Run dev server:
 
 ```bash
 npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Open [http://localhost:3000](http://localhost:3000)
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+### Default logins (after seed)
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+| Role   | Email               | Password      |
+|--------|---------------------|---------------|
+| Admin  | `admin@samiti.local` | `Admin@12345` |
+| Member | `member1@samiti.local` | `Member@12345` |
 
-## Learn More
+(Members 1–32: `member{N}@samiti.local`, same password.)
 
-To learn more about Next.js, take a look at the following resources:
+## Deploy (Vercel + Supabase)
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+1. Create a **Supabase** project and copy the **PostgreSQL** connection string into Vercel env as `DATABASE_URL`.
+2. Set `JWT_SECRET` in Vercel (long random string).
+3. Import repo in **Vercel**, root directory: `investment_cooperative`.
+4. Build command: `npm run build` (runs `prisma generate` via postinstall).
+5. After first deploy, run migrations + seed once (locally against production DB or Supabase SQL):
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+npx prisma db push
+npm run db:seed
+```
 
-## Deploy on Vercel
+6. Point your custom domain in Vercel when ready.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Project structure
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```
+src/app/
+  admin/          # Admin UI
+  dashboard/      # Member profile
+  api/            # REST API routes
+  login/
+src/lib/
+  profit.ts       # Daily profit calculations
+  services.ts     # Fund & member summaries
+prisma/
+  schema.prisma
+  seed.ts
+```
+
+## Investment batch example
+
+- Start: `2025-01-01`, End: `2025-12-31` (365 days)
+- Main amount: `BDT 1,920,000`
+- Profit amount: `BDT 345,600` (you enter the total profit directly — no % required)
+- Daily fund profit = `345,600 ÷ 365`
+- Per member per day = daily profit ÷ number of tagged members
+
+Batches can be any duration and any profit amount; tag all 32 or a subset.
