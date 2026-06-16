@@ -2,7 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
-import Link from "next/link"; // <-- Added Next.js Link
+import Link from "next/link"; 
 import { useTranslations } from "@/components/LanguageProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
@@ -63,10 +63,13 @@ export default function LoginPage() {
               placeholder="masumbillahakhond"
             />
           </label>
-          <label className="block">
-            {/* Added Flexbox to align label and Forgot Password link */}
+          
+          {/* FIXED: Changed from <label> to <div> so the link is clickable! */}
+          <div className="block">
             <div className="flex items-center justify-between">
-              <span className="text-sm font-semibold text-zinc-400">{t.login.password}</span>
+              <label htmlFor="password" className="text-sm font-semibold text-zinc-400">
+                {t.login.password}
+              </label>
               <Link 
                 href="/forgot-password" 
                 className="text-sm font-medium text-amber-500 transition hover:text-amber-400 hover:underline"
@@ -75,13 +78,15 @@ export default function LoginPage() {
               </Link>
             </div>
             <input
+              id="password"
               type="password"
               required
               value={password}
               onChange={(e) => setPassword(e.target.value)}
               className="mt-1 w-full rounded-xl border border-zinc-600 bg-zinc-950 px-3 py-3 text-base text-white outline-none transition focus:border-amber-500/60 focus:ring-2 focus:ring-amber-500/20 sm:py-2.5 sm:text-sm"
             />
-          </label>
+          </div>
+
           {error ? (
             <p className="rounded-xl border border-red-500/30 bg-red-950/40 px-3 py-2 text-sm text-red-400">
               {error}
