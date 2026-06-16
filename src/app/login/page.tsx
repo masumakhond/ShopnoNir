@@ -2,6 +2,7 @@
 
 import { FormEvent, useState } from "react";
 import { useRouter } from "next/navigation";
+import Link from "next/link"; // <-- Added Next.js Link
 import { useTranslations } from "@/components/LanguageProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
@@ -63,7 +64,16 @@ export default function LoginPage() {
             />
           </label>
           <label className="block">
-            <span className="text-sm font-semibold text-zinc-400">{t.login.password}</span>
+            {/* Added Flexbox to align label and Forgot Password link */}
+            <div className="flex items-center justify-between">
+              <span className="text-sm font-semibold text-zinc-400">{t.login.password}</span>
+              <Link 
+                href="/forgot-password" 
+                className="text-sm font-medium text-amber-500 transition hover:text-amber-400 hover:underline"
+              >
+                Forgot password?
+              </Link>
+            </div>
             <input
               type="password"
               required
