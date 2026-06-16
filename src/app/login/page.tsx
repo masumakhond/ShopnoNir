@@ -1,18 +1,20 @@
 "use client";
 
-import { FormEvent, useState } from "react";
-import { useRouter } from "next/navigation";
+import { FormEvent, useState, Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import Link from "next/link"; 
 import { useTranslations } from "@/components/LanguageProvider";
 import { LanguageSwitcher } from "@/components/LanguageSwitcher";
 
-export default function LoginPage() {
+function LoginForm() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const { t } = useTranslations();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
+  const resetSuccess = searchParams.get("reset") === "success";
 
   async function onSubmit(e: FormEvent) {
     e.preventDefault();
@@ -49,6 +51,12 @@ export default function LoginPage() {
           {t.login.title}
         </p>
         <p className="mt-2 text-sm text-zinc-400">{t.login.subtitle}</p>
+
+        {resetSuccess ? (
+          <p className="mt-4 rounded-xl border border-green-500/30 bg-green-950/40 px-3 py-2 text-sm text-green-400">
+            Password updated. You can sign in with your new password.
+          </p>
+        ) : null}
 
         <form onSubmit={onSubmit} className="mt-8 space-y-4">
           <label className="block">
@@ -102,5 +110,13 @@ export default function LoginPage() {
         </form>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={<div className="min-h-screen bg-black" />}>
+      <LoginForm />
+    </Suspense>
   );
 }
