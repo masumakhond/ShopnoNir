@@ -6,6 +6,7 @@ import {
   setAuthCookie,
   verifyPassword,
 } from "@/lib/auth";
+import { apiErrorMessage } from "@/lib/api-error";
 
 const schema = z.object({
   email: z.string().min(3),
@@ -45,12 +46,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: error.flatten() }, { status: 400 });
     }
     console.error("Login error:", error);
-    const message =
-      process.env.NODE_ENV === "development" && error instanceof Error
-        ? error.message.includes("Can't reach database")
-          ? "Database not connected. Stop the server (Ctrl+C), then run: npm run dev:fresh"
-          : error.message
-        : "Login failed";
-    return NextResponse.json({ error: message }, { status: 500 });
+    return NextResponse.json(
+      { error: apiErrorMessage(error, "Login failed") },
+      { status: 500 }
+    );
   }
 }

@@ -1,6 +1,7 @@
 import { NextResponse } from "next/server";
 import { z } from "zod";
 import { getUserByEmail, normalizeLoginId } from "@/lib/auth";
+import { apiErrorMessage } from "@/lib/api-error";
 import { createPasswordResetToken } from "@/lib/password-reset";
 
 const schema = z.object({
@@ -35,6 +36,9 @@ export async function POST(request: Request) {
       return NextResponse.json({ error: "Enter your username or email." }, { status: 400 });
     }
     console.error("Forgot password error:", error);
-    return NextResponse.json({ error: "Could not start password reset." }, { status: 500 });
+    return NextResponse.json(
+      { error: apiErrorMessage(error, "Could not start password reset.") },
+      { status: 500 }
+    );
   }
 }
